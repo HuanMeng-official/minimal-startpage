@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Minimal Startpage",
+  "version": "1.0.0",
+  "description": "极简起始页",
+  "chrome_url_overrides": {
+    "newtab": "main.html"
+  },
+  "host_permissions": [
+    "https://v1.hitokoto.cn/*"
+  ]
+}

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>主页</title>
+  <style>
+    :root {
+      --text: #1a1a1a;
+      --text-2: #5f5f5f;
+      --text-3: #9a9a9a;
+      --border: #d9d9d9;
+      --bg: #fbfbfb;
+      --hover: rgba(0, 0, 0, .05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #e8e8e8;
+        --text-2: #a3a3a3;
+        --text-3: #6e6e6e;
+        --border: #383838;
+        --bg: #161616;
+        --hover: rgba(255, 255, 255, .06);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: light dark;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      transition: background-color .35s ease, color .35s ease;
+      padding: 24px;
+      position: relative;
+    }
+
+    .main-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+      width: 100%;
+      padding-bottom: 70px;
+    }
+
+    .time {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .hm {
+      font-size: 72px;
+      font-weight: 600;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 1px;
+    }
+
+    .sec {
+      font-size: 24px;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+      transition: color .35s ease;
+    }
+
+    .date {
+      text-align: center;
+      margin-top: 10px;
+      color: var(--text-2);
+      font-size: 15px;
+      transition: color .35s ease;
+    }
+
+    form {
+      position: relative;
+      width: min(580px, 92vw);
+    }
+
+    .mag {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--text-3);
+      pointer-events: none;
+      transition: color .35s ease;
+    }
+
+    input {
+      width: 100%;
+      height: 52px;
+      padding: 0 96px 0 50px;
+      font-size: 16px;
+      color: var(--text);
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 26px;
+      outline: none;
+      transition: border-color .2s, background-color .35s ease, color .35s ease;
+    }
+
+    input::placeholder {
+      color: var(--text-3);
+    }
+
+    input:focus {
+      border-color: var(--text);
+    }
+
+    .eng {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .eng-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 36px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-2);
+      background: transparent;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: background-color .2s, color .35s ease;
+    }
+
+    .eng-btn:hover {
+      background: var(--hover);
+    }
+
+    .eng.open .eng-btn {
+      background: var(--hover);
+    }
+
+    .eng-btn .chev {
+      color: var(--text-3);
+      transition: transform .2s ease, color .35s ease;
+    }
+
+    .eng.open .chev {
+      transform: rotate(180deg);
+    }
+
+    .eng-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 136px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, .14);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
+      z-index: 10;
+    }
+
+    .eng.open .eng-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .eng-menu button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-2);
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color .15s, color .15s;
+    }
+
+    .eng-menu button:hover {
+      background: var(--hover);
+      color: var(--text);
+    }
+
+    .eng-menu button.cur {
+      color: var(--text);
+    }
+
+    .eng-menu .ok {
+      width: 14px;
+      height: 14px;
+      color: var(--text);
+      opacity: 0;
+      flex: none;
+    }
+
+    .eng-menu button.cur .ok {
+      opacity: 1;
+    }
+
+    .quote {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(620px, 90vw);
+      text-align: center;
+      cursor: pointer;
+      transition: opacity .18s;
+      user-select: none;
+    }
+
+    .quote.fading {
+      opacity: 0;
+    }
+
+    .qt {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-2);
+      transition: color .35s ease;
+    }
+
+    .qf {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-3);
+      transition: color .35s ease;
+    }
+
+    @media (max-width: 480px) {
+      .hm {
+        font-size: 56px;
+      }
+
+      .sec {
+        font-size: 20px;
+      }
+
+      input {
+        padding-right: 90px;
+      }
+
+      .eng-btn {
+        padding: 0 8px;
+        font-size: 12px;
+      }
+
+      .quote {
+        bottom: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main-wrap">
+    <div>
+      <div class="time"><span class="hm" id="hm">--:--</span><span class="sec" id="sec">--</span></div>
+      <div class="date" id="date"></div>
+    </div>
+
+    <form id="f" autocomplete="off">
+      <svg class="mag" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M11.5 3C16.1944 3 20 6.80558 20 11.5C20 13.523 19.2933 15.381 18.1132 16.8404L21.1364 19.8636C21.4879 20.2151 21.4879 20.7849 21.1364 21.1364C20.7849 21.4879 20.2151 21.4879 19.8636 21.1364L16.8404 18.1132C15.381 19.2933 13.523 20 11.5 20C6.80558 20 3 16.1944 3 11.5C3 6.80558 6.80558 3 11.5 3ZM11.5 18.2C15.2003 18.2 18.2 15.2003 18.2 11.5C18.2 7.79969 15.2003 4.8 11.5 4.8C7.79969 4.8 4.8 7.79969 4.8 11.5C4.8 15.2003 7.79969 18.2 11.5 18.2Z"
+          fill="currentColor" />
+      </svg>
+      <input id="q" type="text" placeholder="输入关键词，回车搜索" aria-label="搜索">
+      <div class="eng" id="eng">
+        <button type="button" class="eng-btn" id="engBtn" aria-haspopup="listbox" aria-expanded="false">
+          <span id="engName">Bing</span>
+          <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="eng-menu" id="engMenu" role="listbox">
+          <button type="button" role="option" data-v="bing"><span>Bing</span><svg class="ok" viewBox="0 0 24 24"
+              fill="none">
+              <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></button>
+          <button type="button" role="option" data-v="google"><span>Google</span><svg class="ok" viewBox="0 0 24 24"
+              fill="none">
+              <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></button>
+          <button type="button" role="option" data-v="ddg"><span>DuckDuckGo</span><svg class="ok" viewBox="0 0 24 24"
+              fill="none">
+              <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="quote" id="quote" title="点击换一句">
+    <div class="qt" id="qt">正在拉取一言…</div>
+    <div class="qf" id="qf"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
