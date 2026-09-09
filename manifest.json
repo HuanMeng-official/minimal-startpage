@@ -3,6 +3,19 @@
   "name": "Minimal Startpage",
   "version": "1.0.0",
   "description": "极简起始页",
+  "icons": {
+    "16": "assets/icon/icon16.png",
+    "48": "assets/icon/icon48.png",
+    "128": "assets/icon/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/icon/icon16.png",
+      "48": "assets/icon/icon48.png",
+      "128": "assets/icon/icon128.png"
+    },
+    "default_title": "极简起始页"
+  },
   "chrome_url_overrides": {
     "newtab": "main.html"
   },
